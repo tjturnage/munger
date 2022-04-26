@@ -4,10 +4,13 @@ from datetime import datetime, timedelta
 from pathlib import Path
 from time import sleep
 
-munge_dir = '/data/scripts/l2munger-main'
-py3_path = '/home/tjt/anaconda3/bin/python'
-base_dir = '/home/tjt/public_html/public/radar/'
-
+#munge_dir = '/data/scripts/l2munger-main'
+munge_dir = '/home/wwwgrr/scripts/munger'
+#munge_dir = 'data/scripts/l2munger-main'
+#py3_path = '/home/tjt/anaconda3/bin/python'
+py3_path = '/usr/bin/python3'
+#dest_dir = '/home/tjt/public_html/public/radar/'
+dest_dir = '/data/www/html/soo/munger/KGRR/'
 
 class Munger():
     """
@@ -17,8 +20,7 @@ class Munger():
     def __init__(self,new_rda='KGRR'):
         self.new_rda = new_rda
         self.radar_dir = f'{base_dir}{self.new_rda}' 
-        self.original_dir = '/home/tjt/public_html/public/radar/orig'
-        self.original_dir = '/data/scripts/l2munger-main'
+        self.original_dir = '/data/scripts/l2munger'
         self.orig_dir = Path(self.original_dir)
         self.orig_files = list(self.orig_dir.glob('*V06'))
         self.first_file = self.orig_files[0].parts[-1]
@@ -37,8 +39,8 @@ class Munger():
         """
         os.chdir(munge_dir)
         [os.remove(f) for f in os.listdir() if f.startswith(self.new_rda)]
-        os.chdir(self.radar_dir)
-        [os.remove(f) for f in os.listdir()]
+        #os.chdir(self.radar_dir)
+        #[os.remove(f) for f in os.listdir()]
         return
     
     def uncompress_files(self):
@@ -81,7 +83,7 @@ class Munger():
 
         os.chdir(munge_dir)
         print('copying files to base directory')
-        os.system(f'cp *gz {self.radar_dir}')
+        os.system(f'cp *gz {dest_dir}')
         return
     
 
