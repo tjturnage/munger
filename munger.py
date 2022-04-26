@@ -10,7 +10,7 @@ munge_dir = '/home/wwwgrr/scripts/munger'
 #py3_path = '/home/tjt/anaconda3/bin/python'
 py3_path = '/usr/bin/python3'
 #dest_dir = '/home/tjt/public_html/public/radar/'
-dest_dir = '/data/www/html/soo/munger/KGRR/'
+dest_dir = '/data/www/html/soo/munger/'
 
 class Munger():
     """
@@ -19,8 +19,8 @@ class Munger():
     
     def __init__(self,new_rda='KGRR'):
         self.new_rda = new_rda
-        self.radar_dir = f'{base_dir}{self.new_rda}' 
-        self.original_dir = '/data/scripts/l2munger'
+        self.radar_dir = f'{dest_dir}{self.new_rda}' 
+        self.original_dir = munge_dir
         self.orig_dir = Path(self.original_dir)
         self.orig_files = list(self.orig_dir.glob('*V06'))
         self.first_file = self.orig_files[0].parts[-1]
@@ -71,7 +71,7 @@ class Munger():
             fn_time_shift = int(fn_epoch_time - self.first_file_epoch_time)
             new_time_obj = simulation_start_time + timedelta(seconds=fn_time_shift)
             new_time_str = datetime.strftime(new_time_obj, '%Y/%m/%d %H:%M:%S')
-            command_line = f'./l2munger {self.new_rda} {new_time_str} 1 {fn}'
+            command_line = f'./munger {self.new_rda} {new_time_str} 1 {fn}'
             print(f'     source file = {fn}')
             os.system(command_line)
         q = Path(self.original_dir)
