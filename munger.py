@@ -5,9 +5,10 @@ from pathlib import Path
 from time import sleep
 
 munge_dir = '/data/scripts/l2munger-main'
-py3_path = '/home/tjt/anaconda3/bin/python'
-base_destination_directory = '/home/tjt/public_html/public/radar/'
-
+#py3_path = '/home/tjt/anaconda3/bin/python'
+py3_path = '/usr/bin/python3'
+#base_destination_directory = '/home/tjt/public_html/public/radar/'
+base_destination_directory = '/data/www/html/soo/munger/'
 
 class Munger():
     """
@@ -34,7 +35,8 @@ class Munger():
             self.first_file_epoch_time = self.get_timestamp(self.first_file)
             self.munge_files()
         if self.start_simulation:
-            print(' Starting simulation!! \n Set polling to https://turnageweather.us/public/radar')
+            #print(' Starting simulation!! \n Set polling to https://turnageweather.us/public/radar')
+            print(' Starting simulation!! \n Set polling to https://intra.noaa.gov/grr/soo/munger')
             self.simulation_files_directory = Path(self.radar_dir)
             self.simulation_files = sorted(list(self.simulation_files_directory.glob('*gz')))        
             self.update_dirlist()
@@ -130,5 +132,5 @@ class Munger():
 
 #-------------------------------
 
-test = Munger(new_rda='KSHV',munge_data=True,remove_uncompressed=False,start_simulation=True)
+test = Munger(new_rda='KGRR',munge_data=True,remove_uncompressed=False,start_simulation=True)
 
