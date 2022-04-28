@@ -4,13 +4,11 @@ from datetime import datetime, timedelta
 from pathlib import Path
 from time import sleep
 
-scripts_dir = '/home/wwwgrr/scripts'
-munge_dir = f'{scripts_dir}/munger'
+munge_dir = '/data/scripts/l2munger-main'
 #py3_path = '/home/tjt/anaconda3/bin/python'
 py3_path = '/usr/bin/python3'
 #base_destination_directory = '/home/tjt/public_html/public/radar/'
 base_destination_directory = '/data/www/html/soo/munger/'
-raw_dir = f'{scripts_dir}/arc2dat/'
 
 class Munger():
     """
@@ -22,8 +20,6 @@ class Munger():
         self.munge_data = munge_data
         self.remove_uncompressed = remove_uncompressed
         self.start_simulation = start_simulation
-        cp_cmd = f'cp {raw_dir}/* {munge_dir}'
-        os.system(cp_cmd)
         self.source_directory = Path(munge_dir)
         self.source_files = list(self.source_directory.glob('*V06'))
         self.first_file = self.source_files[0].parts[-1]
@@ -40,7 +36,7 @@ class Munger():
             self.munge_files()
         if self.start_simulation:
             #print(' Starting simulation!! \n Set polling to https://turnageweather.us/public/radar')
-            print(' Starting simulation!! \n Set polling to http://intra-grr.cr.nws.noaa/soo/munger')
+            print(' Starting simulation!! \n Set polling to https://intra.noaa.gov/grr/soo/munger')
             self.simulation_files_directory = Path(self.radar_dir)
             self.simulation_files = sorted(list(self.simulation_files_directory.glob('*gz')))        
             self.update_dirlist()
@@ -49,23 +45,17 @@ class Munger():
     
     def clean_directories(self):
         """
-
+        filetype example - f'{self.new_rda}*'
         """
-
         os.chdir(munge_dir)
         if self.remove_uncompressed:
-            try:
-                uncompressed_files = glob.glob(os.path.join(munge_dir, '*.uncompressed'))
-                [os.remove(f) for f in uncompressed_files]
-            except:
-                pass
+            uncompressed_files = glob.glob(os.path.join(munge_dir, '*.uncompressed'))
+            [os.remove(f) for f in uncompressed_files]
+        
         #[os.remove(f) for f in os.listdir() if f.startswith(self.new_rda)]
         os.chdir(self.radar_dir)
-        try:
-            [os.remove(f) for f in os.listdir()]
-            return
-        except:
-            pass
+        [os.remove(f) for f in os.listdir()]
+        return
     
     def uncompress_files(self):
         #python debz.py KBRO20170825_195747_V06 KBRO20170825_195747_V06.uncompressed
@@ -142,5 +132,5 @@ class Munger():
 
 #-------------------------------
 
-test = Munger(new_rda='KGRR',munge_data=True,remove_uncompressed=True,start_simulation=True)
+test = Munger(new_rda='KGRR',munge_data=True,remove_uncompressed=False,start_simulation=True)
 
